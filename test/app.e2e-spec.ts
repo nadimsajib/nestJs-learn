@@ -5,6 +5,7 @@ import { AppModule } from './../src/app.module';
 
 describe('AppController (e2e)', () => {
   let app: INestApplication;
+  let accessToken: string; 
 
   beforeEach(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
@@ -27,6 +28,7 @@ describe('AppController (e2e)', () => {
     .post('/auth/login')
     .send({username: 'john', password: 'changeme'})
 
+    accessToken = response.body.access_token;
     expect(response.statusCode).toEqual(201)
   });
 
@@ -36,5 +38,22 @@ describe('AppController (e2e)', () => {
     .send({username: 'nadim', password: 'changeme'})
 
     expect(response.statusCode).toEqual(401)
+  });
+
+  it('/auth/profile (GET)', async() => {
+    const response = await request(app.getHttpServer())
+    .get('/auth/profile')
+    .set({ Authorization: `Bearer ${accessToken}` });
+
+    expect(response.statusCode).toEqual(200);
+    expect(response.body.userId).toBeDefined();
+  });
+
+  
+  it('/auth/profile (GET)', async() => {
+    const response = await request(app.getHttpServer())
+    .get('/auth/profile');
+
+    expect(response.statusCode).toEqual(401);
   });
 });
