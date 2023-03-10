@@ -6,9 +6,10 @@ import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { TypeOrmOoptions } from "./typeorm/config";
+import { PerkModule } from './perk/perk.module';
 
 @Module({
-  imports: [ConfigModule.forRoot({ isGlobal: true }), AuthModule, UsersModule, TypeOrmModule.forRoot(TypeOrmOoptions)],
+  imports: [ConfigModule.forRoot({ isGlobal: true }), AuthModule, UsersModule, PerkModule, TypeOrmModule.forRoot(TypeOrmOoptions)],
   controllers: [AppController],
   providers: [AppService],
 })
